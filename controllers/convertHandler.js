@@ -39,10 +39,7 @@ function ConvertHandler() {
   };
 
   this.handleInput = function (input) {
-    console.log("INPUT:", input);
     let initNum, returnNum, returnUnit, initUnit, string;
-
-    // console.log("match:", input.match(inputRegex).groups);
     let error = this.getErrorMessage(input);
     if (error) {
       return error;
@@ -50,19 +47,16 @@ function ConvertHandler() {
 
     let { numbers, unit } = this.splitNumbersUnit(input);
     unit = unit.toLowerCase();
-    //  console.log("NUMBERS UNIT", numbers, unit);
 
     initNum = numbers == "" ? 1 : this.getNum(numbers);
     initUnit = this.getInitUnit(unit);
     returnUnit = this.getReturnUnit(unit);
     returnNum = Number(this.convert(initNum, unit));
     string = this.getString(initNum, unit, returnNum, returnUnit);
-    //  console.log({ initNum, initUnit, returnUnit, string });
     return { initNum, initUnit, returnUnit, returnNum, string };
   };
 
   this.getErrorMessage = function (input) {
-    //console.log("input in erromessagefunc", input);
     let correctNumber = this.checkNumbers(input);
     let correctUnit = this.checkUnit(input);
 
@@ -77,7 +71,6 @@ function ConvertHandler() {
 
   this.checkUnit = function (input) {
     let unitRegex = /kg$|mi$|lbs$|l$|gal$|km$/i;
-    // console.log(unitRegex.test(input));
     return unitRegex.test(input);
   };
 
@@ -106,40 +99,19 @@ function ConvertHandler() {
       //deal with fancy input (num/num and num.num/num)
       number = this.solveFractional(numbersInput);
     }
-    //console.log("num;", number);
     return number;
   };
 
   this.solveFractional = function (numbersInput) {
-    console.log("INPUT", numbersInput);
-    let solvedFractional, integer, number;
+    let solvedFractional;
 
     let { numerator, denominator } = numbersInput.match(
       /(?<numerator>[\d\.]+)\/(?<denominator>[\d\.]+)/
     ).groups;
-    console.log(
-      "input:",
-      numbersInput,
-      "numerator:",
-      numerator,
-      "denominator",
-      denominator
-    );
 
-    // if (this.amountOfDots(numbersInput) == 1) {
-    //   //we're dealing with a 2.3/4 number
-    //   integer = numbersInput.match(/^\d+/)[0] || 0;
-    //   console.log("INTEGER!", integer);
-    // }
     solvedFractional = numerator / denominator;
 
-    console.log("solvedFractional:", solvedFractional);
-    number = integer
-      ? Number(integer) + Number(solvedFractional)
-      : Number(solvedFractional);
-    console.log("we are here with number: ", number);
-
-    return Number(number);
+    return Number(solvedFractional);
   };
 
   this.correctFractional = function (numbersInput) {
@@ -160,8 +132,6 @@ function ConvertHandler() {
   };
 
   this.spellOutUnit = function (unit) {
-    //  console.log("UNIT:", unit);
-    // console.log(units[unit]);
     return units[unit.toLowerCase()].spelledOut;
   };
 
